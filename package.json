@@ -1,0 +1,18 @@
+{
+  "name": "cron-expression-parser",
+  "version": "1.0.0",
+  "description": "Cron Expression Parser",
+  "main": "app.js",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://git.the-tech-tutorial.com/tallen/cron-expression-parser.git"
+  },
+  "author": "Tyler Allen (tyleruk2000@gmail.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^7.0.1"
+  }
+}
