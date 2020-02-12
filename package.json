@@ -4,6 +4,7 @@
   "description": "Cron Expression Parser",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "./node_modules/mocha/bin/mocha"
   },
   "repository": {
@@ -16,6 +17,7 @@
     "mocha": "^7.0.1"
   },
   "dependencies": {
-    "chalk": "^3.0.0"
+    "chalk": "^3.0.0",
+    "clear": "^0.1.0"
   }
 }
