@@ -5,5 +5,5 @@ const cronParser = require('./src/CronParser')
 //Clear the screen before we do anything
 clear();
 
-cronParser("");
+cronParser.parseMinute("")
 
