@@ -6,5 +6,5 @@ var args = process.argv.slice(2)
 //Clear the screen before we do anything
 clear();
 
-cronParser(args)
+cronParser.parseExpersion(args)
 

@@ -8,28 +8,52 @@ function parseExpersion(cronArray){
 
     testExpersion(cronExpersion);
     
-    
+    const minuteValues  =   parseMinute(    cronArray[0])
+    const hourValues    =   parseHour(      cronArray[1])
+    const domValues     =   parseDom(       cronArray[2])
+    const monthValues   =   parseMonth(     cronArray[3])
+    const dowValues     =   parseDow(       cronArray[4])
+
 }
 
-function testExpersion(cronExpersion){
+async function testExpersion(cronExpersion){
 
-    cronExpersion.forEach(element => {
+    for (let index = 0; index < cronExpersion.length; index++) {
 
-        if (!Expersion.validateExpersion(element)){
-
-            console.log(chalk.red.bold("Invalid Cron Expersion: " + element));
+        const expersion = cronExpersion[index]
+        const expersionValid = await Expersion.validateExpersion(expersion)
+        
+        if (!expersionValid){
+            console.log(chalk.red.bold("Invalid Cron Expersion: " + expersion));
             process.exit()
-
         }
-    });
+      }
+    
 }
 
 function parseMinute(cronExpression){
-    
-    console.log(expersion.minuteConstraint.low)
-
 
     return ""
 }
 
-module.exports = parseExpersion
+function parseHour(cronExpression){
+
+    return ""
+}
+
+function parseDom(cronExpression){
+
+    return ""
+}
+
+function parseMonth(cronExpression){
+
+    return ""
+}
+
+function parseDow(cronExpression){
+
+    return ""
+}
+
+module.exports = {parseExpersion,parseMinute,parseHour,parseDom,parseMonth,parseDow}
