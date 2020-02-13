@@ -27,4 +27,9 @@ CronExpression.dowConstraint = {
     high: 7
 }
 
+CronExpression.standardValidCharacters = /^[\d|/|*|\-|,]+$/;
+CronExpression.validateExpersion = {
+    
+}
+
 module.exports = CronExpression;
