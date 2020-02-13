@@ -27,9 +27,12 @@ CronExpression.dowConstraint = {
     high: 7
 }
 
+var patt = /e/;
 CronExpression.standardValidCharacters = /^[\d|/|*|\-|,]+$/;
-CronExpression.validateExpersion = {
-    
+
+CronExpression.validateExpersion = function (cronExpersion){
+
+    return CronExpression.standardValidCharacters.test(cronExpersion)
 }
 
 module.exports = CronExpression;

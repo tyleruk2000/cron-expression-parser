@@ -66,17 +66,17 @@ describe('Expersion', function(){
     describe('CronExpression.validateExpersion', function(){
 
         it ("should return true on valid chars in exerpsion", function(){
-            assert.true(Expersion.validateExpersion("*/15"));
-            assert.true(Expersion.validateExpersion("0"));
-            assert.true(Expersion.validateExpersion("1,15"));
-            assert.true(Expersion.validateExpersion("*"));
-            assert.true(Expersion.validateExpersion("1-5"));
+            assert.equal(Expersion.validateExpersion("*/15"), true);
+            assert.equal(Expersion.validateExpersion("0"), true);
+            assert.equal(Expersion.validateExpersion("1,15"), true);
+            assert.equal(Expersion.validateExpersion("*"), true);
+            assert.equal(Expersion.validateExpersion("1-5"), true);
         });
 
-        it ("should return false on invalud cars in experion", function(){
-            assert.false(Expersion.validateExpersion("1to5"));
-            assert.false(Expersion.validateExpersion("a"));
-            assert.false(Expersion.validateExpersion(" "));
+        it ("should return false on invalid chars in experion", function(){
+            assert.equal(Expersion.validateExpersion("a"),false);
+            assert.equal(Expersion.validateExpersion("1to10"),false);
+            assert.equal(Expersion.validateExpersion("*\10"),false);
         });
 
     });
