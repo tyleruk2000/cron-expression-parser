@@ -1,15 +1,17 @@
 # Cron Expression Parser
 Take an input of a cron expersion and command. The application will then output a tabe showing the details of the cron expersion
 
+//TODO Explaing the *
+
 ---
 # Application Usage
 
 ## Basic usage
 
-An example of parsing the cron expersion `*/15 0 1,15 * 1-5` to run the command `/usr/bin/find`
+An example of parsing the cron expersion `*/15 0 1,15 * 1-5` to run the command `/usr/bin/find`. **Any * should be escaped to stop the shell adding the current files into the folder**. Alternativly if you are using bash you can run the command `set -f` to disables expansions
 
 ```bash
-npm start */15 0 1,15 * 1-5 /usr/bin/find
+npm start */15 0 1,15 \* 1-5 /usr/bin/find
 ```
 
 ## To Run Unit Tests
