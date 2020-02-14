@@ -138,7 +138,6 @@ function displayError(name, cronExpression){
     process.exit();
 }
 
-
 function parseMinute(cronExpression){
     return processExpersion(
         cronExpression, 
@@ -179,4 +178,4 @@ function parseDow(cronExpression){
         'Day Of Week');
 }
 
-module.exports = {parseExpersion,parseMinute,parseHour,parseDom,parseMonth,parseDow,checkInLimits}
+module.exports = {parseExpersion,parseMinute,parseHour,parseDom,parseMonth,parseDow,checkInLimits};

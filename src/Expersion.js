@@ -37,7 +37,7 @@ CronExpression.startsWithStar = /^\*\/.*/;
 
 CronExpression.validateExpersion = function (cronExpersion){
 
-    return CronExpression.standardValidCharacters.test(cronExpersion)
+    return CronExpression.standardValidCharacters.test(cronExpersion);
 }
 
 module.exports = CronExpression;
