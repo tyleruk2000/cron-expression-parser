@@ -1,12 +1,19 @@
 # Cron Expression Parser
-Take an input of a cron expersion and command. The application will then output a tabe showing the details of the cron expersion
+Take an input of a cron expersion and a command. The application will then output a tabe showing the details of the cron expersion
 
 ---
 # Application Usage
 
+## Prerequisites
+
+ 
 ## Basic usage
 
-An example of parsing the cron expersion `*/15 0 1,15 * 1-5` to run the command `/usr/bin/find`. **Any * should be escaped to stop the shell adding the current files into the folder**. Alternativly if you are using bash you can run the command `set -f` to disables expansions
+Below is an example of parsing the cron expersion `*/15 0 1,15 * 1-5` to run the command `/usr/bin/find`. 
+
+**Any * should be escaped to stop the shell adding the a list of files in the folder into the arguments**. 
+
+Alternativly if you are using bash you can run the command `set -f` to disables expansions
 
 ```bash
 npm start */15 0 1,15 \* 1-5 /usr/bin/find
@@ -34,3 +41,4 @@ npm start
 |date|time-spent|
 |---|---|
 |13/02/20|1.5hr|
+|14/02/20|1.5hr|
