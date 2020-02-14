@@ -5,7 +5,7 @@ Take an input of a cron expersion and a command. The application will then outpu
 # Application Usage
 
 ## Prerequisites
-
+In order to run this application you will need to have node installed on your machine. You can download node from [here](https://nodejs.org/en/download/) 
  
 ## Basic usage
 
