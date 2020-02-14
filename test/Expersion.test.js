@@ -1,5 +1,5 @@
 var assert = require('assert');
-const Expersion = require('../src/Expersion')
+const Expersion = require('../src/CronExpression')
 
 describe('Expersion', function(){
     

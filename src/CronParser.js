@@ -2,7 +2,7 @@ const chalk = require('chalk');
 var clui = require('clui'),
     Line = clui.Line;
 
-const Expersion = require('./Expersion')
+const Expersion = require('./CronExpression')
 
 async function parseExpersion(cronArray){
     const cronExpersion =   cronArray.slice(0,5);
