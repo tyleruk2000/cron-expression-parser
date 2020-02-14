@@ -1,18 +1,37 @@
 const chalk = require('chalk');
+var clui = require('clui'),
+    Line = clui.Line;
 
 const Expersion = require('./Expersion')
 
-function parseExpersion(cronArray){
+async function parseExpersion(cronArray){
     const cronExpersion =   cronArray.slice(0,5);
     const command   =   cronArray.slice(5,6);
 
     testExpersion(cronExpersion);
     
-    const minuteValues  =   parseMinute(    cronArray[0])
-    const hourValues    =   parseHour(      cronArray[1])
-    const domValues     =   parseDom(       cronArray[2])
-    const monthValues   =   parseMonth(     cronArray[3])
-    const dowValues     =   parseDow(       cronArray[4])
+    const minuteValues  =   parseMinute(    cronArray[0]);
+    const hourValues    =   parseHour(      cronArray[1]);
+    const domValues     =   parseDom(       cronArray[2]);
+    const monthValues   =   parseMonth(     cronArray[3]);
+    const dowValues     =   parseDow(       cronArray[4]);
+
+    await printLine('minute', minuteValues);
+    await printLine('hour', hourValues);
+    await printLine('day of month', domValues);
+    await printLine('month', monthValues);
+    await printLine('day of week', dowValues);
+    await printLine('command', command[0]);
+
+
+}
+
+async function printLine(name, values){
+    new Line()
+    .column(chalk.green(name), 20)
+    .column(values, 40)
+    .fill()
+    .output();
 
 }
 
@@ -20,49 +39,119 @@ async function testExpersion(cronExpersion){
 
     if (cronExpersion.length == 0){
         console.log(chalk.red.bold("No expersion found!"));
-        console.log("usage: npm start [cron expresion] [command]")
-        process.exit()
+        console.log("usage: npm start [cron expresion] [command]");
+        process.exit();
     }
 
     for (let index = 0; index < cronExpersion.length; index++) {
 
-        const expersion = cronExpersion[index]
-        const expersionValid = await Expersion.validateExpersion(expersion)
+        const expersion = cronExpersion[index];
+        const expersionValid = await Expersion.validateExpersion(expersion);
         
         if (!expersionValid){
             console.log(chalk.red.bold("Invalid Cron Expersion: " + expersion));
-            process.exit()
+            process.exit();
         }
     }
     
 }
 
-//*/15 0 1,15 * 1-5`
+function processExpersion(cronExpression, low, high, name){
+
+
+    if (Expersion.singleNumber.test(cronExpression)){ //0
+        
+        if (
+            cronExpression => low && 
+            cronExpression <=  high
+            ){
+
+                return cronExpression;
+
+            }else{
+                console.log(chalk.red.bold("Invalid " + name + " Expersion: " + cronExpression));
+                process.exit();
+            }
+        
+    }else if (Expersion.containsComma.test(cronExpression)){ //1,15
+        
+        return cronExpression.split(',').join(" ");
+
+    }else if (Expersion.containsDash.test(cronExpression)){//1-5
+    
+        const values = cronExpression.split('-')
+        //TODO check for limit
+        return loopThoughNumbers(values[0], parseInt(values[1])+1, 1)
+    
+    }else if (Expersion.containsSingleStar.test(cronExpression)){//*
+        
+        return loopThoughNumbers(low, parseInt(high)+1, 1)
+    
+    }else if (Expersion.startsWithStar.test(cronExpression)){//*/15
+        
+        var plusBy = parseInt(/(\d*)$/g.exec(cronExpression)[1]);
+        return loopThoughNumbers(low, high, plusBy)
+
+    }
+
+    console.log(chalk.red.bold("Invalid " + name + " Expersion: " + cronExpression));
+    process.exit();
+}
+
+function loopThoughNumbers(low,high,plusBy){
+    var values = [];
+    var low = parseInt(low);
+    var high = parseInt(high);
+    var plusBy = parseInt(plusBy);
+
+    var nextNumber = low;
+    while (nextNumber < high){
+        values.push(nextNumber)
+        nextNumber = nextNumber + plusBy;
+    }
+
+    return values.join(' ');
+}
+
+
 function parseMinute(cronExpression){
-
-    console.log("Minute: " + cronExpression)
-
-    return ""
+    return processExpersion(
+        cronExpression, 
+        Expersion.minuteConstraint.low,
+        Expersion.minuteConstraint.high, 
+        'Minute');
 }
 
 function parseHour(cronExpression){
-
-    return ""
+    return processExpersion(
+        cronExpression, 
+        Expersion.hourConstraint.low,
+        Expersion.hourConstraint.high, 
+        'Hour');
 }
 
 function parseDom(cronExpression){
-
-    return ""
+    return processExpersion(
+        cronExpression, 
+        Expersion.domConstraint.low,
+        Expersion.domConstraint.high, 
+        'Day Of Month');
 }
 
 function parseMonth(cronExpression){
-
-    return ""
+    return processExpersion(
+        cronExpression, 
+        Expersion.monthConstraint.low,
+        Expersion.monthConstraint.high, 
+        'Month');
 }
 
 function parseDow(cronExpression){
-
-    return ""
+    return processExpersion(
+        cronExpression, 
+        Expersion.dowConstraint.low,
+        Expersion.dowConstraint.high, 
+        'Day Of Week');
 }
 
 module.exports = {parseExpersion,parseMinute,parseHour,parseDom,parseMonth,parseDow}

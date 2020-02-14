@@ -23,7 +23,7 @@ describe('CronParser', function(){
 
     describe('CronParser.parseMonth()', function(){
         it ("should return the month used in a cron expresion", function(){
-            assert.equal(cronParser.parseMinute("*"), "1 2 3 4 5 6 7 8 9 10 11 12")
+            assert.equal(cronParser.parseMonth("*"), "1 2 3 4 5 6 7 8 9 10 11 12")
         });
     });
 
