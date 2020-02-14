@@ -23,7 +23,6 @@ async function parseExpersion(cronArray){
     await printLine('day of week', dowValues);
     await printLine('command', command[0]);
 
-
 }
 
 async function printLine(name, values){
@@ -58,44 +57,51 @@ async function testExpersion(cronExpersion){
 
 function processExpersion(cronExpression, low, high, name){
 
-
-    if (Expersion.singleNumber.test(cronExpression)){ //0
+    if (Expersion.singleNumber.test(cronExpression)){ 
+        //0
+        if (checkInLimits(low, high, [cronExpression])){
+            return cronExpression;
+        }else{
+            displayError(name, cronExpression);
+        }
         
-        if (
-            cronExpression => low && 
-            cronExpression <=  high
-            ){
+    }else if (Expersion.containsComma.test(cronExpression)){
+         //1,15
+        const values = cronExpression.split(',');
 
-                return cronExpression;
+        if (checkInLimits(low, high, values)){
+            return values.join(" ");
+        }else{
+            displayError(name, cronExpression);
+        }
 
-            }else{
-                console.log(chalk.red.bold("Invalid " + name + " Expersion: " + cronExpression));
-                process.exit();
-            }
-        
-    }else if (Expersion.containsComma.test(cronExpression)){ //1,15
-        
-        return cronExpression.split(',').join(" ");
+    }else if (Expersion.containsDash.test(cronExpression)){
+        //1-5
+        const values = cronExpression.split('-');
 
-    }else if (Expersion.containsDash.test(cronExpression)){//1-5
+        if (checkInLimits(low, high, values)){
+            return loopThoughNumbers(values[0], parseInt(values[1])+1, 1);
+        }else{
+            displayError(name, cronExpression);
+        }
     
-        const values = cronExpression.split('-')
-        //TODO check for limit
-        return loopThoughNumbers(values[0], parseInt(values[1])+1, 1)
+    }else if (Expersion.containsSingleStar.test(cronExpression)){
+        //*
+        return loopThoughNumbers(low, parseInt(high)+1, 1);
     
-    }else if (Expersion.containsSingleStar.test(cronExpression)){//*
-        
-        return loopThoughNumbers(low, parseInt(high)+1, 1)
-    
-    }else if (Expersion.startsWithStar.test(cronExpression)){//*/15
-        
+    }else if (Expersion.startsWithStar.test(cronExpression)){
+        //*/15
         var plusBy = parseInt(/(\d*)$/g.exec(cronExpression)[1]);
-        return loopThoughNumbers(low, high, plusBy)
+
+        if (checkInLimits(low, high, [plusBy])){
+            return loopThoughNumbers(low, high, plusBy);
+        }else{
+            displayError(name, cronExpression);
+        }
 
     }
 
-    console.log(chalk.red.bold("Invalid " + name + " Expersion: " + cronExpression));
-    process.exit();
+    displayError(name, cronExpression);
 }
 
 function loopThoughNumbers(low,high,plusBy){
@@ -106,11 +112,30 @@ function loopThoughNumbers(low,high,plusBy){
 
     var nextNumber = low;
     while (nextNumber < high){
-        values.push(nextNumber)
+        values.push(nextNumber);
         nextNumber = nextNumber + plusBy;
     }
 
     return values.join(' ');
+}
+
+function checkInLimits(low,high,values){
+
+    for (let index = 0; index < values.length; index++) {
+        if (parseInt(values[index]) < low){
+            return false;
+        }
+        if (parseInt(values[index]) > high){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+function displayError(name, cronExpression){
+    console.log(chalk.red.bold("Invalid " + name + " Expersion: " + cronExpression));
+    process.exit();
 }
 
 
@@ -154,4 +179,4 @@ function parseDow(cronExpression){
         'Day Of Week');
 }
 
-module.exports = {parseExpersion,parseMinute,parseHour,parseDom,parseMonth,parseDow}
+module.exports = {parseExpersion,parseMinute,parseHour,parseDom,parseMonth,parseDow,checkInLimits}

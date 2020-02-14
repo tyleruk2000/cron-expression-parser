@@ -3,6 +3,18 @@ const cronParser = require('../src/CronParser')
 
 describe('CronParser', function(){
     
+    describe('CronParser.checkInLimits()', function(){
+        it ("should return true if the number's is within limits", function(){
+            assert.equal(cronParser.checkInLimits(0,15,["0,15"]), true)
+        });
+    });
+
+    describe('CronParser.checkInLimits()', function(){
+        it ("should return flase if the number's is out of limits", function(){
+            assert.equal(cronParser.checkInLimits(0,15,["50,100"]), false)
+        });
+    });
+
     describe('CronParser.parseMinute()', function(){
         it ("should return the minutes used in a cron expresion", function(){
             assert.equal(cronParser.parseMinute("*/15"), "0 15 30 45")
