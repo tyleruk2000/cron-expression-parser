@@ -1,8 +1,6 @@
 # Cron Expression Parser
 Take an input of a cron expersion and command. The application will then output a tabe showing the details of the cron expersion
 
-//TODO Explaing the *
-
 ---
 # Application Usage
 
@@ -31,3 +29,8 @@ npm start
 │    └─────────────── hour (0 - 23)
 └──────────────────── minute (0 - 59)
 ```
+
+### Time Tracker
+|date|time-spent|
+|---|---|
+|13/02/20|1.5hr|

@@ -29,6 +29,11 @@ CronExpression.dowConstraint = {
 
 var patt = /e/;
 CronExpression.standardValidCharacters = /^[\d|/|*|\-|,]+$/;
+CronExpression.singleNumber = /^[\d]+$/;
+CronExpression.containsComma = /.*,.*/;
+CronExpression.containsDash = /.*\-.*/;
+CronExpression.containsSingleStar = /^\*$/;
+CronExpression.startsWithStar = /^\*\/.*/;
 
 CronExpression.validateExpersion = function (cronExpersion){
 
