@@ -10,7 +10,7 @@ describe('CronParser', function(){
     });
 
     describe('CronParser.checkInLimits()', function(){
-        it ("should return flase if the number's is out of limits", function(){
+        it ("should return false if the number's is out of limits", function(){
             assert.equal(cronParser.checkInLimits(0,15,["50,100"]), false);
         });
     });
