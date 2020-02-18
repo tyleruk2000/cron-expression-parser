@@ -28,7 +28,7 @@ async function parseExpersion(cronArray){
 async function printLine(name, values){
     new Line()
     .column(chalk.green(name), 20)
-    .column(values, 40)
+    .column(values)
     .fill()
     .output();
 
@@ -70,7 +70,7 @@ function processExpersion(cronExpression, low, high, name){
         const values = cronExpression.split(',');
 
         if (checkInLimits(low, high, values)){
-            return values.join(" ");
+            return cleanAndSortOutput(values).join(" ");
         }else{
             displayError(name, cronExpression);
         }
@@ -80,21 +80,22 @@ function processExpersion(cronExpression, low, high, name){
         const values = cronExpression.split('-');
 
         if (checkInLimits(low, high, values)){
-            return loopThoughNumbers(values[0], parseInt(values[1])+1, 1);
+            return loopThoughNumbers(cleanAndSortOutput(values)[0], parseInt(values[1])+1, low, high, 1);
         }else{
             displayError(name, cronExpression);
         }
     
     }else if (Expersion.containsSingleStar.test(cronExpression)){
         //*
-        return loopThoughNumbers(low, parseInt(high)+1, 1);
+        high = parseInt(high)+1
+        return loopThoughNumbers(low, high, low, high, 1);
     
     }else if (Expersion.startsWithStar.test(cronExpression)){
         //*/15
         var plusBy = parseInt(/(\d*)$/g.exec(cronExpression)[1]);
 
         if (checkInLimits(low, high, [plusBy])){
-            return loopThoughNumbers(low, high, plusBy);
+            return loopThoughNumbers(low, high, low, high, plusBy);
         }else{
             displayError(name, cronExpression);
         }
@@ -104,16 +105,50 @@ function processExpersion(cronExpression, low, high, name){
     displayError(name, cronExpression);
 }
 
-function loopThoughNumbers(low,high,plusBy){
+function cleanAndSortOutput(values){
+
+    var cleanedArray = [];
+
+    for (let index = 0; index < values.length; index++){
+
+        var currentValue = parseInt(values[index]);
+
+        if(!cleanedArray.includes(currentValue)){
+            cleanedArray.push( currentValue );
+        }
+    }
+
+    cleanedArray.sort()
+
+    return cleanedArray
+}
+
+//TODO update this to wrap around
+function loopThoughNumbers(start,end,min,max,plusBy){
     var values = [];
-    var low = parseInt(low);
-    var high = parseInt(high);
+    var start = parseInt(start);
+    var end = parseInt(end);
+    var min = parseInt(min);
+    var max = parseInt(max);
     var plusBy = parseInt(plusBy);
 
-    var nextNumber = low;
-    while (nextNumber < high){
+    var nextNumber = start;
+
+    console.log("Start:" + start)
+    console.log("End:" + end)
+    
+    while (nextNumber != end){
+
         values.push(nextNumber);
+
         nextNumber = nextNumber + plusBy;
+
+        console.log("nextNumber: " + nextNumber + "max: " + max + " end: " + end)
+
+        if (nextNumber > max){
+            nextNumber = min
+        }
+
     }
 
     return values.join(' ');
