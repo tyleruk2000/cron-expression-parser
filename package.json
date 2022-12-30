@@ -14,7 +14,7 @@
   "author": "Tyler Allen (tyleruk2000@gmail.com)",
   "license": "ISC",
   "devDependencies": {
-    "mocha": "^7.0.1"
+    "mocha": "^10.2.0"
   },
   "dependencies": {
     "chalk": "^3.0.0",
